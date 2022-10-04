@@ -1,0 +1,23 @@
+{
+  "name": "playlist",
+  "version": "1.0.0",
+  "description": "An web playlist with HTML, JavaScript and Tailwind",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CGalezo/Playlist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CGalezo/Playlist/issues"
+  },
+  "homepage": "https://github.com/CGalezo/Playlist#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.1.8"
+  }
+}
