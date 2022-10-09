@@ -1,51 +1,7 @@
-const convertTime = (time) => {
-  let mins = Math.floor(time / 60);
-  let secs = Math.floor(time % 60);
-  if (secs < 10) {
-    secs = "0" + String(secs);
-  }
-  return mins + ":" + secs;
-};
-
-const footer = (name) => {
-  return `<div class="flex items-center justify-between w-96 text-white">
-  <img class="w-16 h-16 ml-2" src="../assets/img/default.png" alt="default">
-  <div>
-    <div class="marquee w-64">
-      <p>${name}</p>
-    </div>
-    <p class="text-xs text-gray-300">Singer</p>
-  </div>
-  <span class="icon-heart hover:cursor-pointer text-gray-300 hover:text-white"></span>
-</div>
-<div class="flex flex-col justify-between w-96 h-16">
-  <div class="flex justify-between text-gray-300 text-2xl items-center">
-    <button class="icon-shuffle"></button>
-    <button class="icon-previous2"></button>
-    <button class="play-button icon-play3 text-slate-900 bg-gray-300 rounded-full p-2"></button>
-    <button class="icon-next2"></button>
-    <button class="icon-loop"></button>
-  </div>
-  <div class=" flex justify-between text-gray-300">
-    <p class="timer">0:00</p>
-    <input class="slider song-slider bg-slate-300 hover:cursor-pointer" type="range" value="0" min="0" max="100" step="1">
-    <p class="duration">3:00</p>
-  </div>
-</div>
-<div class="flex justify-between w-80 text-gray-300 text-2xl ">
-  <span class="pl-8 icon-volume-medium"></span>
-  <input class="volumen-slider slider bg-slate-300" type="range" value="100" min="0" max="100" step="1">
-</div>`;
-};
-
 var count = 1;
 
-const addSong = (name, audio) => {
-  const grid = document.querySelector(".grid-container");
-
+function changeHandler({ target }) {
   const d = new Date();
-
-  const audioDuration = convertTime(audio.duration);
 
   const months = {
     0: "Jan",
@@ -62,105 +18,117 @@ const addSong = (name, audio) => {
     11: "Dec",
   };
   const date = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-
-  const playButton = document.createElement("button");
-  playButton.className = "icon-play3 hover:opacity-50";
-
-  playButton.addEventListener("click", () => {
-    const footerDOM = document.querySelector("footer");
-    footerDOM.innerHTML = footer(name);
-
-    const playBtn = document.querySelector(".play-button");
-    const progressEl = document.querySelector(".song-slider");
-    const timer = document.querySelector(".timer");
-    const duration = document.querySelector(".duration");
-    const progressVol = document.querySelector(".volumen-slider");
-
-    let mouseDownOnSlider = false;
-
-    progressEl.value = 0;
-
-    duration.innerHTML = audioDuration;
-
-    audio.addEventListener("timeupdate", () => {
-      if (!mouseDownOnSlider) {
-        progressEl.value = (audio.currentTime / audio.duration) * 100;
-
-        timer.innerHTML = convertTime(audio.currentTime);
-      }
-    });
-    audio.addEventListener("ended", () => {
-      playBtn.className =
-        "play-button icon-play3 text-slate-900 bg-gray-300 rounded-full p-2";
-    });
-    playBtn.addEventListener("click", () => {
-      audio.paused ? audio.play() : audio.pause();
-      playBtn.className = audio.paused
-        ? "play-button icon-play3 text-slate-900 bg-gray-300 rounded-full p-2"
-        : "play-button icon-pause2 text-slate-900 bg-gray-300 rounded-full p-2";
-    });
-
-    progressEl.addEventListener("change", () => {
-      const pct = progressEl.value / 100;
-      audio.currentTime = (audio.duration || 0) * pct;
-    });
-    progressEl.addEventListener("mousedown", () => {
-      mouseDownOnSlider = true;
-    });
-    progressEl.addEventListener("mouseup", () => {
-      mouseDownOnSlider = false;
-    });
-
-    progressVol.addEventListener("input", (e) => {
-      audio.volume = e.currentTarget.value / 100;
-    });
-  });
-
-  const editButton = document.createElement("button");
-  editButton.className = "icon-pencil hover:opacity-50";
-
-  const deleteButton = document.createElement("button");
-  deleteButton.className = "icon-bin hover:opacity-50";
-
-  const actionsContainer = document.createElement("div");
-  actionsContainer.className = "space-x-2";
-
-  actionsContainer.appendChild(playButton);
-  actionsContainer.appendChild(editButton);
-  actionsContainer.appendChild(deleteButton);
-
-  grid.innerHTML =
-    grid.innerHTML +
-    `<p>${count++}</p>
-  <div class="flex col-span-2 space-x-3 items-center">
-    <img class="w-10 h-10" src="../assets/img/default.png" alt="">
-    <h5 class="truncate">${name}</h5>
-  </div>
-  <p>${date}</p>
-  <p>${audioDuration}</p>`;
-
-  grid.appendChild(actionsContainer);
-};
-
-function changeHandler({ target }) {
   // Make sure we have files to use
   if (!target.files.length) return;
-
-  const songName = target.files[0].name.split(".")[0];
 
   // Create a blob that we can use as an src for our audio element
   const urlObj = URL.createObjectURL(target.files[0]);
 
-  //if (audio !== undefined) {
-    //audio.pause();
-  //}
-  const audio = new Audio(urlObj);
+  // Create an audio element
+  const audio = document.createElement("audio");
+  audio.className = "col-span-2";
+
+  // Clean up the URL Object after we are done with it
+  audio.addEventListener("load", () => {
+    URL.revokeObjectURL(urlObj);
+  });
+
+  const songs = document.querySelector(".songs");
+  songs.textContent = count + (count == 1 ? " song" : " songs");
+
+  // Append the audio element
+  const playlist = document.querySelector(".grid-container");
+  playlist.innerHTML =
+    playlist.innerHTML +
+    `<p>${count++}</p>
+  <div class="flex col-span-2 space-x-3 items-center">
+  <img class="w-10 h-10" src="../assets/img/default.png" alt="">
+  <div class="truncate w-64">${target.files[0].name}</div>
+  </div>
+  <p>${date}</p>`;
+  playlist.appendChild(audio);
+
+  // Allow us to control the audio
+  audio.controls = "true";
+
+  // Set the src and start loading the audio from the file
+  audio.src = urlObj;
 
   audio.addEventListener("loadeddata", () => {
-    addSong(songName, audio);
+    let h = Math.floor(audio.duration / 3600);
+    let m = Math.floor((audio.duration % 3600) / 60);
+
+    const hours = document.querySelector(".hours");
+    const minutes = document.querySelector(".minutes");
+
+    hours.textContent = h + parseInt(hours.textContent);
+    minutes.textContent = m + parseInt(minutes.textContent);
   });
 }
 
 document
   .getElementById("audio-upload")
   .addEventListener("change", changeHandler);
+
+const save = document.querySelector(".save-button");
+
+save.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const name = document.querySelector(".playlist-name").value;
+  const author = document.querySelector(".author").value;
+  const description = document.querySelector(".description").value;
+
+  const message = document.querySelector(".error-message");
+
+  if (name === "") {
+    message.textContent = "Invalid name";
+  } else if (author === "") {
+    message.textContent = "Invalid author";
+  } else {
+
+    count = 1;
+
+    const grid = document.querySelector(".playlist-grid");
+    grid.innerHTML = `<p class="font-bold col-span-1 text-white">#</p>
+    <P class="font-bold col-span-2 text-white">TITLE</P>
+    <p class="font-bold col-span-1 text-white">DATE ADDED</p>
+    <p class="font-bold col-span-2 text-white">PLAY</p>`;
+
+    const list_playlist = document.querySelector(".list-playlist");
+    list_playlist.innerHTML =
+      list_playlist.innerHTML + `<p class="mt-3">${name}</p>`;
+
+    const nameDom = document.querySelector(".name-DOM");
+    const authorDom = document.querySelector(".author-DOM");
+    const descrptionDom = document.querySelector(".description-DOM");
+
+    nameDom.textContent = name;
+    authorDom.textContent = author;
+    descrptionDom.textContent = description;
+
+    const playlistForm = document.querySelector(".create-playlist");
+    const playlist = document.querySelector(".playlist");
+
+    playlistForm.className =
+      "hidden create-playlist flex items-center justify-center w-5/6 bg-slate-800 rounded-lg";
+    playlist.className =
+      "playlist w-5/6 bg-slate-800 rounded-lg overflow-y-auto";
+
+    document.querySelector(".playlist-name").value = "";
+    document.querySelector(".author").value = "";
+    document.querySelector(".description").value = "";
+    message.textContent = "";
+  }
+});
+
+const createButton = document.querySelector(".button-create-playlist");
+createButton.addEventListener("click", () => {
+  const playlistForm = document.querySelector(".create-playlist");
+  const playlist = document.querySelector(".playlist");
+
+  playlistForm.className =
+    "create-playlist flex items-center justify-center w-5/6 bg-slate-800 rounded-lg";
+  playlist.className =
+    "hidden playlist w-5/6 bg-slate-800 rounded-lg overflow-y-auto";
+});

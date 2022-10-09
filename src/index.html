@@ -21,89 +21,61 @@
       </div>
     </div>
   </nav>
-  <div class="flex h-3/4 mx-6">
+  <div class="flex h-5/6 mx-6 mb-6">
     <section class="flex flex-col w-1/6 bg-slate-800 rounded-lg mr-2 p-6 overflow-y-auto">
-      <div class="flex items-center hover:cursor-pointer">
+      <div class="hover:opacity-50 flex items-center hover:cursor-pointer">
         <span class="icon-plus rounded-sm p-2 bg-gray-300 text-slate-800 "></span>
-        <p class="ml-4 font-bold text-gray-300">Create Playlist</p>
+        <p class="button-create-playlist ml-4 font-bold text-gray-300">Create Playlist</p>
       </div>
       <div class="border-b-2 mt-4"></div>
-      <div class="grow flex flex-col justify-start text-gray-300">
-        <p class="mt-3">My Playlist</p>
-        <p class="mt-3">My Playlist #2</p>
-        <p class="mt-3">My Playlist #3</p>
-        <p class="mt-3">My Playlist #4</p>
+      <div class="list-playlist grow flex flex-col justify-start text-gray-300">
       </div>
     </section>
-    <section class="playlist w-5/6 bg-slate-800 rounded-lg overflow-y-auto ">
+    <section class="hidden playlist w-5/6 bg-slate-800 rounded-lg overflow-y-auto">
       <div class="w-full h-60 bg-slate-600 flex items-center px-5">
         <img class="h-4/5 shadow-2xl" src="../assets/img/no_cover.jpg" alt="no_cover">
         <div class="pl-6 flex flex-col align-bottom space-y-3">
           <h6 class="text-sm font-bold text-white">PLAYLIST</h6>
-          <h1 class="text-6xl font-bold text-white">My Playlist</h1>
-          <p class="text-sm text-gray-400">Some music for the normies</p>
-          <p class="text-sm text-white"><span>Author</span> - <span>19 songs</span>, <span>1 hr 5 min</span></p>
+          <h1 class="name-DOM text-6xl font-bold text-white">My Playlist</h1>
+          <p class="description-DOM text-sm text-gray-400"></p>
+          <p class="text-sm text-white"><span class="author-DOM">Author</span> - <span class="songs">0 songs</span>, <span class="hours">0</span> hr <span class="minutes">0</span> min</p>
         </div>
       </div>
       <div class="ml-6 py-3 w-11/12 border-b-2 border-gray-600">
-        <div class="flex w-5/12 items-center space-x-2 hover: cursor-pointer relative">
+        <div class="hover:opacity-50 flex w-5/12 items-center space-x-2 hover: cursor-pointer relative">
           <button class="icon-plus bg-gray-300 rounded-sm  text-slate-800 p-3 text-2xl"></button>
           <h1 class="text-gray-300 text-3xl font-bold">Add your favorite music!</h1>
           <input id="audio-upload" class="fileInput" type="file" name="file1" />
         </div>
       </div>
-      <div class="grid-container ml-6 mt-5 w-11/12 grid grid-cols-6 gap-y-2 gap-x-3 text-gray-400 items-center">
+      <div class="playlist-grid grid-container ml-6 my-5 w-11/12 grid grid-cols-6 gap-y-2 gap-x-3 text-gray-400 items-center">
         <p class="font-bold col-span-1 text-white">#</p>
         <P class="font-bold col-span-2 text-white">TITLE</P>
         <p class="font-bold col-span-1 text-white">DATE ADDED</p>
-        <span class="font-bold icon-clock col-span-1 text-white"></span>
-        <p class="font-bold col-span-1 text-white">ACTIONS</p>
-
-        <p>1</p>
-        <div class="flex col-span-2 space-x-3 items-center">
-          <img class="w-10 h-10" src="../assets/img/default.png" alt="">
-          <h5>INDUSTRY BABE (feat. Jack Harlow)</h5>
-        </div>
-        <p>Aug 24, 2022</p>
-        <p>3:32</p>
-        <div class="space-x-2">
-          <button class="icon-play3 hover:opacity-50"></button>
-          <button class="icon-pencil hover:opacity-50"></button>
-          <button class="icon-bin hover:opacity-50"></button>
+        <p class="font-bold col-span-2 text-white">PLAY</p>
+      </div>
+    </section>
+    <section class="create-playlist flex items-center justify-center w-5/6 bg-slate-800 rounded-lg ">
+      <div class="flex flex-col bg-slate-700 h-4/5 w-3/5 rounded-lg p-6">
+        <h1 class="text-white font-bold text-2xl mb-10">Create Playlist</h1>
+        <div class="flex">
+          <img class="h-60 w-60 shadow-2xl mr-3" src="../assets/img/no_cover.jpg" alt="no_cover">
+          <div class="w-full">
+            <form class="flex flex-col w-full text-white" action="#" method="post">
+              <input class="playlist-name mb-3 rounded-md w-full h-10 p-2 bg-slate-500" type="text" placeholder="Playlist name">
+              <input class="author mb-3 rounded-md w-full h-10 p-2 bg-slate-500" type="text" placeholder="Author name">
+              <textarea class="description mb-3 p-2 bg-slate-500 rounded-md w-full" name="description" id="description" cols="40" rows="5" placeholder="Add an optional description"></textarea>
+              <div class="flex justify-between">
+                <p class="error-message text-gray-500"></p>
+                <button type="submit" class="save-button self-end hover:opacity-40 w-28 rounded-3xl px-4 py-3 bg-white text-gray-700 font-bold">Save</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
   </div>
-  <footer class="grow py-2 px-6 rounded-lg flex justify-between items-center">
-    <div class="flex items-center space-x-4 w-96 text-white">
-      <img class="w-16 h-16 ml-2" src="../assets/img/default.png" alt="default">
-      <div>
-        <div class="marquee w-64">
-          <p>INDUSTRY BABE (feat. Jack Harlow)</p>
-        </div>
-        <p class="text-xs text-gray-300">Singer</p>
-      </div>
-      <span class="icon-heart hover:cursor-pointer text-gray-300 hover:text-white"></span>
-    </div>
-    <div class="flex flex-col justify-between w-96 h-16">
-      <div class="flex justify-between text-gray-300 text-2xl items-center">
-        <button class="icon-shuffle"></button>
-        <button class="icon-previous2"></button>
-        <button class="play-button icon-play3 text-slate-900 bg-gray-300 rounded-full p-2"></button>
-        <button class="icon-next2"></button>
-        <button class="icon-loop"></button>
-      </div>
-      <div class=" flex justify-between text-gray-300">
-        <p class="timer">0:00</p>
-        <input class="slider song-slider bg-slate-300 hover:cursor-pointer" type="range" value="0" min="0" max="100" step="1">
-        <p class="duration">3:32</p>
-      </div>
-    </div>
-    <div class="flex justify-between w-80 text-gray-300 text-2xl ">
-      <span class="pl-8 icon-volume-medium"></span>
-      <input class="slider bg-slate-300 volumen-slider" type="range" value="100" min="0" max="100" step="1">
-    </div>
-  </footer>
+  
   <script src="./script.js"></script>
 </body>
 </html>
